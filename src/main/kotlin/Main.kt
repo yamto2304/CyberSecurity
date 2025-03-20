@@ -1,9 +1,5 @@
-import java.math.BigInteger
 import model.DiffieHellmanComponent
 import model.DiffieHellmanParty
-import org.bouncycastle.crypto.generators.HKDFBytesGenerator
-import org.bouncycastle.crypto.params.HKDFParameters
-import org.bouncycastle.crypto.digests.SHA256Digest
 
 fun main() {
     simulateAllDHComponent()
