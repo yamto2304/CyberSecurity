@@ -1,46 +1,20 @@
 import java.math.BigInteger
 import model.DiffieHellmanComponent
 import model.DiffieHellmanParty
+import org.bouncycastle.crypto.generators.HKDFBytesGenerator
+import org.bouncycastle.crypto.params.HKDFParameters
+import org.bouncycastle.crypto.digests.SHA256Digest
 
 fun main() {
-    // Tham số công khai (có thể thay đổi)
-    val basicDHComponent = DiffieHellmanComponent(
-        prime = BigInteger("23"),
-        generator = BigInteger("5")
-    )
-
-    val advanceDHComponent2048 = DiffieHellmanComponent(
-        prime = BigInteger(Constants.HEX_PRIME_2048, 16),
-        generator = Constants.GENERATOR
-    )
-
-    val advanceDHComponent3072 = DiffieHellmanComponent(
-        prime = BigInteger(Constants.HEX_PRIME_3072, 16),
-        generator = Constants.GENERATOR
-    )
-
-    val advanceDHComponent4096= DiffieHellmanComponent(
-        prime = BigInteger(Constants.HEX_PRIME_4096, 16),
-        generator = Constants.GENERATOR
-    )
-
-    val advanceDHComponent6144 = DiffieHellmanComponent(
-        prime = BigInteger(Constants.HEX_PRIME_6144, 16),
-        generator = Constants.GENERATOR
-    )
-
-    val advanceDHComponent8192 = DiffieHellmanComponent(
-        prime = BigInteger(Constants.HEX_PRIME_8192, 16),
-        generator = Constants.GENERATOR
-    )
-
-//    simulateExchangeKeyWithDHComponent(basicDHComponent)
-//    simulateExchangeKeyWithDHComponent(advanceDHComponent2048)
-//    simulateExchangeKeyWithDHComponent(advanceDHComponent3072)
-//    simulateExchangeKeyWithDHComponent(advanceDHComponent4096)
-//    simulateExchangeKeyWithDHComponent(advanceDHComponent6144)
-    simulateExchangeKeyWithDHComponent(advanceDHComponent8192)
+    simulateAllDHComponent()
 }
+
+fun simulateAllDHComponent() {
+    for (component in Constants.listDHComponent) {
+        simulateExchangeKeyWithDHComponent(component)
+    }
+}
+
 
 fun simulateExchangeKeyWithDHComponent(component: DiffieHellmanComponent) {
     // Tạo Alice và Bob
