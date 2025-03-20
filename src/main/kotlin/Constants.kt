@@ -1,9 +1,23 @@
 import java.math.BigInteger
+import model.DiffieHellmanComponent
 
 object Constants {
     // Số nguyên tố 2048-bit từ RFC 3526 (Group 14)
     // Refer https://datatracker.ietf.org/doc/html/rfc3526
-    val HEX_PRIME_2048 = """
+    private val GENERATOR: BigInteger = BigInteger.valueOf(2L)
+
+    private val HEX_PRIME_1536 = """
+        FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1
+        29024E08 8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD
+        EF9519B3 CD3A431B 302B0A6D F25F1437 4FE1356D 6D51C245
+        E485B576 625E7EC6 F44C42E9 A637ED6B 0BFF5CB6 F406B7ED
+        EE386BFB 5A899FA5 AE9F2411 7C4B1FE6 49286651 ECE45B3D
+        C2007CB8 A163BF05 98DA4836 1C55D39A 69163FA8 FD24CF5F
+        83655D23 DCA3AD96 1C62F356 208552BB 9ED52907 7096966D
+        670C354E 4ABC9804 F1746C08 CA237327 FFFFFFFF FFFFFFFF
+    """.replace("\\s+".toRegex(), "")
+
+    private val HEX_PRIME_2048 = """
         FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1
         29024E08 8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD
         EF9519B3 CD3A431B 302B0A6D F25F1437 4FE1356D 6D51C245
@@ -17,18 +31,7 @@ object Constants {
         15728E5A 8AACAA68 FFFFFFFF FFFFFFFF
     """.replace("\\s+".toRegex(), "")
 
-    val HEX_PRIME_1536 = """
-        FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1
-        29024E08 8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD
-        EF9519B3 CD3A431B 302B0A6D F25F1437 4FE1356D 6D51C245
-        E485B576 625E7EC6 F44C42E9 A637ED6B 0BFF5CB6 F406B7ED
-        EE386BFB 5A899FA5 AE9F2411 7C4B1FE6 49286651 ECE45B3D
-        C2007CB8 A163BF05 98DA4836 1C55D39A 69163FA8 FD24CF5F
-        83655D23 DCA3AD96 1C62F356 208552BB 9ED52907 7096966D
-        670C354E 4ABC9804 F1746C08 CA237327 FFFFFFFF FFFFFFFF
-    """.replace("\\s+".toRegex(), "")
-
-    val HEX_PRIME_3072 = """
+    private val HEX_PRIME_3072 = """
         FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1
         29024E08 8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD
         EF9519B3 CD3A431B 302B0A6D F25F1437 4FE1356D 6D51C245
@@ -47,7 +50,7 @@ object Constants {
         43DB5BFC E0FD108E 4B82D120 A93AD2CA FFFFFFFF FFFFFFFF
     """.replace("\\s+".toRegex(), "")
 
-    val HEX_PRIME_4096 = """
+    private val HEX_PRIME_4096 = """
         FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1
         29024E08 8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD
         EF9519B3 CD3A431B 302B0A6D F25F1437 4FE1356D 6D51C245
@@ -72,7 +75,7 @@ object Constants {
         FFFFFFFF FFFFFFFF
     """.replace("\\s+".toRegex(), "")
 
-    val HEX_PRIME_6144 = """
+    private val HEX_PRIME_6144 = """
         FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1 29024E08
         8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD EF9519B3 CD3A431B
         302B0A6D F25F1437 4FE1356D 6D51C245 E485B576 625E7EC6 F44C42E9
@@ -103,7 +106,7 @@ object Constants {
         6DCC4024 FFFFFFFF FFFFFFFF
     """.replace("\\s+".toRegex(), "")
 
-    val HEX_PRIME_8192 = """
+    private val HEX_PRIME_8192 = """
         FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1
         29024E08 8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD
         EF9519B3 CD3A431B 302B0A6D F25F1437 4FE1356D 6D51C245
@@ -149,9 +152,48 @@ object Constants {
         60C980DD 98EDD3DF FFFFFFFF FFFFFFFF
     """.replace("\\s+".toRegex(), "")
 
-    val HEX_PRIME_SAMPLE = """
-        FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1
-    """.replace("\\s+".toRegex(), "")
+    private val basicDHComponent = DiffieHellmanComponent(
+        prime = BigInteger("23"),
+        generator = BigInteger("5")
+    )
 
-    val GENERATOR = BigInteger.valueOf(2L)
+    private val advanceDHComponent1536 = DiffieHellmanComponent(
+        prime = BigInteger(HEX_PRIME_1536, 16),
+        generator = GENERATOR
+    )
+
+    private val advanceDHComponent2048 = DiffieHellmanComponent(
+        prime = BigInteger(HEX_PRIME_2048, 16),
+        generator = GENERATOR
+    )
+
+    private val advanceDHComponent3072 = DiffieHellmanComponent(
+        prime = BigInteger(HEX_PRIME_3072, 16),
+        generator = GENERATOR
+    )
+
+    private val advanceDHComponent4096 = DiffieHellmanComponent(
+        prime = BigInteger(HEX_PRIME_4096, 16),
+        generator = GENERATOR
+    )
+
+    private val advanceDHComponent6144 = DiffieHellmanComponent(
+        prime = BigInteger(HEX_PRIME_6144, 16),
+        generator = GENERATOR
+    )
+
+    private val advanceDHComponent8192 = DiffieHellmanComponent(
+        prime = BigInteger(HEX_PRIME_8192, 16),
+        generator = GENERATOR
+    )
+
+    val listDHComponent = listOf(
+        basicDHComponent,
+        advanceDHComponent1536,
+        advanceDHComponent2048,
+        advanceDHComponent3072,
+        advanceDHComponent4096,
+        advanceDHComponent6144,
+        advanceDHComponent8192
+    )
 }
